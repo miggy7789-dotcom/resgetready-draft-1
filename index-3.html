@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interactives – Activities</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#fff;--ink:#1f2a3d;--paper:#fff;
+--sky:#70C9ED;--sky-l:#E5F5FA;--pink:#E94B9B;--pink-l:#F8E7EF;--yel:#F7E477;--yel-l:#FFF3D4;--green:#76C76B;--green-l:#E9F3DC;
+--blue-d:#1B6F93;--pink-d:#B8306F;--green-d:#3B8A31;--line:#8a8a8a;
+--head:Orbitron,system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#15181d;--ink:#eef2f6;--paper:#20252c;--sky:#2b6f8d;--sky-l:#1f3b48;--pink-l:#4a2438;--yel:#6b5f1f;--yel-l:#3f3a1f;--green-l:#2b3d27;--blue-d:#8fd6f2;--pink-d:#ff8fc4;--green-d:#9be08f;--line:#777}}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:12px;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.wrap{max-width:900px;margin:0 auto;padding:0 12px 60px}
+.fun,h2,h3{font-family:var(--head);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.round{width:24px;height:24px;border-radius:50%;border:1.5px solid #3B8A31;background:var(--green);color:#10230d;font-size:12px;line-height:1;padding:0}
+.round.x{border-color:#b8306f;background:var(--pink);color:#fff;font-weight:800}
+.round:disabled{opacity:.45;cursor:default}
+
+/* tabs */
+.tabs{display:flex;align-items:center;gap:8px;background:var(--sky);color:#10222e;padding:6px 12px;position:sticky;top:0;z-index:5}
+.tab{border:0;background:none;font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.04em;padding:3px 16px;border-radius:99px}
+.tab[aria-selected=true]{background:var(--pink);color:#fff}
+.sp{flex:1}
+
+/* cards */
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:18px 0}
+.game{background:var(--yel-l);border:2px solid var(--yel);border-radius:12px;padding:10px 14px 14px;font-size:12px;text-align:left;box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.game h3{margin:.1em 0 .4em;font-size:1.3rem}
+.game:nth-child(1) h3{color:var(--pink-d)}.game:nth-child(2) h3{color:var(--blue-d)}.game:nth-child(3) h3{color:var(--green-d)}
+.game[aria-pressed=true]{border-color:var(--pink);box-shadow:0 0 0 2px var(--pink),0 3px 8px rgba(0,0,0,.15)}
+
+/* windows */
+.win{background:var(--yel-l);border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.2);margin:20px 0;overflow:hidden}
+.wbar{display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:11px;letter-spacing:.05em}
+.win .wbar{background:var(--yel);color:#2b2500}
+.wbar h2{flex:1;margin:0;font-size:11px}
+.wbody{padding:6px 16px 20px}
+
+/* accordion */
+.acc{list-style:none;margin:0;padding:0}
+.acc>li{margin:8px 0}
+.acc .head{display:flex;align-items:center;gap:8px;width:100%;border:0;background:none;text-align:left;padding:2px 0}
+.acc .chev{display:inline-block;transition:transform .2s;font-weight:800;color:var(--pink-d)}
+.acc [aria-expanded=true] .chev{transform:rotate(90deg)}
+.acc .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--ink);background:var(--paper)}
+.acc .lbl{padding:4px 14px;background:var(--sky-l);border:2px solid var(--sky);border-radius:8px;font-size:clamp(.85rem,3.6vw,1.25rem);color:var(--blue-d)}
+.nums{display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 6px 56px}
+.nums button{width:38px;height:34px;border:2px solid var(--sky);border-radius:8px;background:var(--sky-l);font-family:var(--head);font-weight:700;font-size:12px;color:var(--blue-d)}
+.nums button:hover{border-color:var(--pink)}
+.nums button[aria-current=true]{background:var(--pink);border-color:var(--pink);color:#fff}
+
+/* step viewer */
+.viewer{background:var(--paper);border:2px solid var(--sky);border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.2);overflow:hidden;margin:20px 0}
+.viewer .wbar{background:var(--sky);color:#10222e}
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:12px}
+@media(max-width:640px){.vgrid{grid-template-columns:1fr}}
+.steps{background:var(--pink-l);border-radius:10px;padding:10px 14px 14px;max-height:min(72vh,560px);overflow:auto;font-size:12px}
+.steps h3{margin:0 0 6px;text-align:center;font-size:1.4rem;color:var(--pink-d)}
+.step{margin:8px 0;padding:6px 8px;border-radius:8px}
+.step:has(input:checked){background:var(--green-l)}
+.step label{display:flex;gap:8px;align-items:center;font-family:var(--head);font-weight:700;font-size:12px;cursor:pointer}
+.step input{width:16px;height:16px;accent-color:var(--green-d)}
+.step p,.step ul{margin:.4em 0 0 24px;font-size:12px}
+.step ul{padding-left:16px}
+.step ul ul{margin-left:0}
+.step input:checked+span{text-decoration:line-through;opacity:.7}
+.write{border:2px solid var(--sky);border-radius:8px;background:var(--paper);color:var(--ink);font:inherit;padding:10px;min-height:260px;resize:vertical;width:100%}
+.pg{font-size:11px;margin-right:6px}
+
+/* quiz deck */
+.deck{margin:20px 0}
+.deckhead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.deckhead h2{margin:0;font-size:1.3rem;color:var(--blue-d)}
+.deck-sub{margin:2px 0 0;opacity:.75}
+.studybtn{border:0;border-radius:99px;background:var(--pink);color:#fff;font-family:var(--head);font-weight:700;font-size:12px;letter-spacing:.04em;padding:10px 20px}
+.studybtn:hover{filter:brightness(.95)}
+.cardsh{margin:0 0 10px;font-size:12px;color:var(--pink-d)}
+.qcard{background:var(--paper);border:2px solid var(--sky);border-radius:14px;margin:0 0 12px;overflow:hidden}
+.qcard .qt{padding:12px 16px;font-weight:800;border-bottom:1px dashed var(--sky)}
+.qcard mark,.sq mark{background:var(--green-l);color:inherit;border-radius:4px;padding:0 3px}
+.qcard ul{list-style:none;margin:12px;padding:0;border:2px solid var(--sky);border-radius:14px;overflow:hidden}
+.qcard li{display:flex;gap:8px;align-items:center;padding:10px 12px;background:var(--sky-l);color:#1f2a3d}
+.qcard li+li{border-top:2px solid var(--sky)}
+.qcard li .ic{width:16px;text-align:center;font-weight:800;color:#8a96a3}
+.qcard li.ok .ic{color:var(--green-d)}
+.qcard li.ok{font-weight:800}
+.sq{background:var(--paper);border:2px solid var(--sky);border-radius:14px;padding:16px}
+.sprog{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-family:var(--head);font-weight:700;font-size:11px}
+.bar{flex:1;height:8px;border-radius:99px;background:var(--sky-l);overflow:hidden;border:1px solid var(--sky)}
+.bar i{display:block;height:100%;background:var(--pink);transition:width .25s}
+.sq .qt{font-weight:800;font-size:14px;margin:0 0 14px}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;width:100%;padding:11px 14px;border:2px solid var(--sky);border-radius:12px;background:var(--sky-l);color:#1f2a3d}
+.opt:hover:not(:disabled){border-color:var(--pink)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--green);border-color:var(--green-d);font-weight:800}
+.opt.wrong{background:var(--pink-l);border-color:var(--pink);font-weight:800}
+.sfoot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;min-height:38px}
+.fb{font-weight:800}
+.fb.ok{color:var(--green-d)}.fb.no{color:var(--pink-d)}
+.score{text-align:center;padding:20px 8px}
+.score .big{font-family:var(--head);font-weight:900;font-size:2rem;color:var(--pink-d);margin:0 0 6px}
+.score .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.ghost{border:2px solid var(--sky);border-radius:99px;background:var(--sky-l);color:#1f2a3d;font-family:var(--head);font-weight:700;font-size:12px;padding:8px 18px}
+@media(prefers-reduced-motion:reduce){.bar i{transition:none}}
+.hidden{display:none!important}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.acc .chev{transition:none}}
+</style>
+</head>
+<body>
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" aria-selected="false" data-t="writing">WRITING</button>
+  <button class="tab" role="tab" aria-selected="true" data-t="interactives">INTERACTIVES</button>
+  <span class="sp"></span>
+  <button class="round" aria-label="Switch tab" id="flip">‹</button>
+  <button class="round x" aria-label="Close">✕</button>
+</div>
+
+<div class="wrap">
+  <section id="writing" class="hidden">
+    <p style="margin-top:24px">Switch to <b>Interactives</b> to try the writing activities. Aute proident ut dolor cillum in elit aliqua consequat.</p>
+  </section>
+
+  <section id="interactives">
+    <div class="games">
+      <button class="game" aria-pressed="false" data-g="quiz"><h3 class="fun">Quiz</h3>Occaecat ea in exercitation incididunt voluptate consectetur aliqua labore proident minim eiusmod irure esse cupidatat</button>
+      <button class="game" aria-pressed="true" data-g="activity"><h3 class="fun">Activity</h3>Occaecat ea in exercitation incididunt voluptate consectetur aliqua labore proident minim eiusmod irure esse cupidatat</button>
+    </div>
+
+    <div class="win" id="activities">
+      <div class="wbar"><h2>ACTIVITIES</h2><button class="round" id="a-prev" aria-label="Collapse all">‹</button><button class="round x" id="a-close" aria-label="Close activities">✕</button></div>
+      <div class="wbody"><ul class="acc" id="acc"></ul></div>
+    </div>
+    <section class="deck hidden" id="quiz" aria-label="Quiz deck">
+      <div class="deckhead">
+        <div><h2 class="fun" id="deck-title">Research Time!</h2><p class="deck-sub" id="deck-sub"></p></div>
+        <button class="studybtn" id="study-btn">Study deck</button>
+      </div>
+      <div id="materials">
+        <h3 class="cardsh" id="cards-h"></h3>
+        <div id="cards"></div>
+      </div>
+      <div id="study" class="hidden" aria-live="polite"></div>
+    </section>
+
+    <div class="viewer hidden" id="viewer" aria-live="polite">
+      <div class="wbar"><h2 id="v-title"></h2><span class="pg" id="v-pg"></span><button class="round" id="v-prev" aria-label="Previous page">‹</button><button class="round" id="v-next" aria-label="Next page">›</button><button class="round x" id="v-close" aria-label="Close">✕</button></div>
+      <div class="vgrid"><div class="steps" id="steps"></div><textarea class="write" id="write" placeholder="TYPE HERE..." aria-label="Writing area"></textarea></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const LOREM="Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.";
+/* placeholder pages for sections without content yet */
+const gen=n=>Array.from({length:n},()=>[["Step title one",LOREM],["Step title two",LOREM,["Lorem ipsum dolor sit amet","Consectetur adipiscing elit"]],["Step title three",LOREM]]);
+
+/* data: section -> [ [item name, pages] ]
+   page = [step, ...]; step = [title, ...blocks]; block = "paragraph" | [bullets] ; a bullet may be followed by an array = its sub-bullets */
+const DATA={
+ "Introduction Writing":[
+  ["Background of the Study",[
+   [["Define the Topic","Write one sentence stating the core topic and one sentence stating the boundaries (time period, population, geographic focus, or methodological scope). This acts as your compass for the rest of the section."],
+    ["Search the Literature","Conduct a targeted literature search using academic databases such as PubMed, Scopus, Web of Science, or Google Scholar. Focus on finding foundational studies that established key concepts, recent studies that represent the current state of knowledge, and studies that are most closely related to your specific research question.","Organize your sources thematically rather than chronologically. Group them by subtopic, methodology, population, or finding."],
+    ["Identify Key Themes","Read through your collected sources and identify what the evidence consistently shows, where findings disagree, what methodological approaches dominate, and where coverage is thin or absent. These themes become your paragraph topics."]],
+   [["Synthesize the Evidence","Synthesis means combining evidence from multiple sources to make a single point. Each paragraph should advance one theme or argument, drawing on multiple citations to support it. This demonstrates that you understand the literature as a body of evidence, not just as a collection of individual papers."],
+    ["State the Gap","After presenting what is known, you must clearly state what is not known. The gap is the specific piece of missing knowledge that your study will address. Effective gap statements use phrases such as “however, no study has examined,” “despite this evidence, the relationship between X and Y remains unclear,” or “existing research has focused predominantly on Z, leaving the question of W unanswered.”"],
+    ["Connect to Your Purpose","The final paragraph of your background should transition from the gap to the purpose of your study. This connection must be explicit: “Therefore, this study aims to...” or “To address this gap, the present research examines...” The reader should feel that your study is a logical and necessary response to the gap you have just identified."]]]],
+
+  ["Rationale",[
+   [["Establish the Scope","Summarize what is reliably known, citing the strongest and most current evidence. This section exists to earn the reader’s agreement that you understand the field, not to list everything ever published on the topic — be selective and cite the work that most directly bears on the gap you’re about to name."],
+    ["Identify the Gap","This is the step most rationales get wrong. “Nobody has studied X” is not, by itself, a reason to study X. A gap is worth filling when at least one of the following is true:",
+      ["Existing findings conflict, and resolving the conflict would change practice or theory.","A finding from one population, setting, or method hasn’t been tested elsewhere and there’s a specific reason to expect it might not generalize.","A theoretical prediction has never been empirically tested.","A practical or clinical decision is currently being made without the evidence it needs."],
+      "A strong rationale distinguishes “nobody has looked” from “nobody has looked, and here is why that specifically matters.”"]],
+   [["State the Significance","Say precisely what this study contributes that the existing literature does not: a new population, a stronger design, a missing measurement, a direct test of a claim that has only been assumed. This is the sentence a reader should be able to lift out and use as the one-line justification for the whole study."],
+    ["State the Consequence of Not Doing It","Close the rationale by naming what stays unresolved, or what continues to happen, if the study isn’t done — a clinical decision made on weaker evidence, a policy built on an untested assumption, a theoretical debate that stays unresolved. This is what converts “interesting gap” into “gap worth the cost of closing,” and it’s the sentence a funder or committee is often looking for most directly."]]]],
+
+  ["Review of Related Literature",[
+   [["Search for Related Literature","Before you begin searching for literature, you need a clearly defined topic.","If you are writing the literature review section of a dissertation or research paper, you will search for literature related to your research problem and questions."],
+    ["Evaluate and Select Sources","You likely won’t be able to read absolutely everything that has been written on your topic, so it will be necessary to evaluate which sources are most relevant to your research question.","For each publication, ask yourself:",
+      ["What question or problem is the author addressing?","What are the key concepts and how are they defined?","What are the key theories, models, and methods?","Does the research use established frameworks or take an innovative approach?","What are the results and conclusions of the study?","How does the publication relate to other literature in the field?","Does it confirm, add to, or challenge established knowledge?","What are the strengths and weaknesses of the research?"],
+      "Make sure the sources you use are credible, and make sure you read any landmark studies and major theories in your field of research."]],
+   [["Identify Themes, Debate, and Gaps","To begin organizing your literature review’s argument and structure, be sure you understand the connections and relationships between the sources you’ve read. Based on your reading and notes, you can look for:",
+      ["Trends and patterns (in theory, method or results): do certain approaches become more or less popular over time?","Themes: what questions or concepts recur across the literature?","Debates, conflicts and contradictions: where do sources disagree?","Pivotal publications: are there any influential theories or studies that changed the direction of the field?","Gaps: what is missing from the literature? Are there weaknesses that need to be addressed?"]],
+    ["Outline Your Literature Review’s Structure","There are various approaches to organizing the body of a literature review. Depending on the length of your literature review, you can combine several of these strategies (for example, your overall structure might be thematic, but each theme is discussed chronologically)."]]]],
+
+  ["Statement of the Problem",[
+   [["Narrow the Topic to a Specific Population and Setting",["Replace broad subjects with a defined group, place, and period","Move from “student engagement” to “grade 9 algebra students in 3 rural districts, 2022–2025”","Apply the 4W test: who, where, what, and when"]],
+    ["Gather Evidence Before Drafting",["Collect institutional data, national statistics, audit results, or quality reports","Prefer sources published within the last 5 years for prevalence claims","Record exact figures and their denominators, since reviewers check them"]],
+    ["Name the Gap Precisely","Whether it’s a Population, Methodological, Evidence, or Practical Gap."],
+    ["Quantify the Impact",["Attach at least 1 number to the shortfall: a rate, a percentage, a cost, or a count","Compare that figure to a benchmark, a prior year, or a peer group","Avoid vague intensifiers such as “many,” “significant,” or “alarming”"]],
+    ["State the Consequence of Inaction",["Identify who bears the cost: students, patients, staff, customers, or the organization","Describe the cost in the currency of the field: outcomes, safety events, revenue, or turnover","Keep it factual; do not shift into advocacy language"]],
+    ["Draft, then Cut",["Write the full passage without worrying about length","Remove sentences that describe the field generally rather than the gap specifically","Check that every remaining sentence maps to 1 of the 5 core components","Read the first sentence alone: it should still convey the problem"]]]]],
+
+  ["Hypothesis",[
+   [["Ask a Question","Writing a hypothesis begins with a research question that you want to answer. The question should be focused, specific, and researchable within the constraints of your project."],
+    ["Do Some Preliminary Research","Your initial answer to the question should be based on what is already known about the topic. Look for theories and previous studies to help you form educated assumptions about what your research will find."],
+    ["Formulate Your Hypothesis","Now you should have some idea of what you expect to find. Write your initial answer to the question in a clear, concise sentence."],
+    ["Refine Your Hypothesis","You need to make sure your hypothesis is specific and testable. There are various ways of phrasing a hypothesis, but all the terms you use should have clear definitions, and the hypothesis should contain:",["The relevant variables","The specific group being studied","The predicted outcome of the experiment or analysis"]],
+    ["Write a Null Hypothesis","If your research involves statistical hypothesis testing, you will also have to write a null hypothesis. The null hypothesis is the default position that there is no association between the variables. The null hypothesis is written as H0, while the alternative hypothesis is H1 or Ha."],
+    ["Phrase Your Hypothesis in 3 Ways","To identify the variables, you can write a simple prediction in if…then form, state the predicted relationship between them, or what difference you expect to find between them."]]]],
+
+  ["Significance of the Study",[
+   [["Restate the Research Problem and Gap in One Sentence","Anchor the reader in what is missing from current knowledge or practice."],
+    ["State the Contribution","Say plainly what new knowledge, evidence or insight your study will produce."],
+    ["Identify the Beneficiaries","Name specific groups: researchers in the field, a profession, a policy area, an organisation, a community, future students. Be concrete."],
+    ["Explain How Each Group Benefits","For every beneficiary, give a short, plausible outcome rather than a vague claim."],
+    ["Connect to Theory and Practice","Separate the theoretical contribution from the practical implications so the examiner sees both."],
+    ["Keep It Realistic","Match your claims to your study’s scope and sample. Overclaiming is the fastest way to lose credibility."]]]],
+
+  ["Scope and Limitation",[
+   [["Restate Your Aim and Research Questions","Open the section by re-anchoring the reader to what the study sets out to achieve. The scope grows directly out of the aim."],
+    ["State What the Study Covers","Work through the six dimensions above — population, place, period, variables, method — and write a sentence or two for each that applies."]],
+   [["State What the Study Excludes","Name the groups, settings, variables or methods you are deliberately leaving out. This is where scope shades into delimitations."],
+    ["Give a Brief Reason for Each Major Boundary","“X was excluded because…” shows the boundary is a considered decision, not an oversight."],
+    ["Check Alignment","Confirm that the scope matches your research questions, methodology and the way you will phrase your conclusions. Anything that does not align must be fixed now, not in the viva."]]]],
+
+  ["Engineering Goals",[
+   [["Define the Real-World Need (Not Just a Problem)","Identify the exact practical problem you are trying to solve.","Clearly specify your target user, system, or operational environment (e.g., “To reduce thermal dissipation in low-cost solar inverters for rural households”)."],
+    ["Formulate the Primary Engineering Goal","State the main artifact, device, software, or process you intend to create, design, or improve.","Use a clear sentence structure: “My/Our engineering goal is to [create/improve] [specific system/product] to [solve specific problem or perform specific task].”"],
+    ["Apply the SMART Framework","Ensure your goals and sub-goals are:",["Specific (targeted action)","Measurable (tied to a numerical benchmark)","Achievable (realistic with available resources and time)","Relevant (directly addresses the engineering gap)","Time-bound (mapped to project milestones and deliverables)"]],
+    ["Define Concrete Deliverables","List the tangible or intangible outputs of your research (e.g., a physical prototype, a functional software module, a test dataset, or a technical design blueprint)."]]]],
+
+  ["Risks and Hazards",[
+   [["Identify the Hazards",["Break down procedures: List every step of your experimental design, field collection, or protocol.","Categorize the sources: Look for physical, chemical, biological, psychological, or data/privacy hazards:",["Chemical/Biological: Toxic reagents, pathogens, biohazards, or flammable materials.","Physical/Environmental: Heavy machinery, extreme weather on field trips, high voltages, or sharp instruments.","Human/Ethical: Posing sensitive questions, handling confidential data, or vulnerable participant groups."]]],
+    ["Determine Who Might Be Harmed and How",["Identify affected groups: Note whether the danger impacts the researcher, lab assistants, participants, animals, or the surrounding community.","Describe the mechanism: Explain how the harm could occur (e.g., accidental skin contact with a corrosive acid, data breach of participant identities, or heat exhaustion during outdoor sampling)."]]],
+   [["Establish Control and Mitigation Measures","Apply the hierarchy of controls:",["Elimination / Substitution: Remove the hazard or replace it with a safer alternative.","Engineering Controls: Use fume hoods, biosafety cabinets, or machine guards.","Administrative Controls: Limit exposure time, implement standard operating procedures (SOPs), or provide safety training.","Personal Protective Equipment (PPE): Specify required gear (e.g., lab coats, goggles, gloves, respirators)."]],
+    ["Outline Emergency and Disposal Protocols",["Accident response: State what steps will be taken if something goes wrong (e.g., spill kits, eye-wash stations, first aid, or emergency contacts).","Waste management: Detail how hazardous chemical waste, sharps, or biological samples will be safely neutralized and disposed of according to institutional guidelines."]]],
+   [["Document and Review",["Draft the section clearly: Write out your findings into a formal “Risk and Safety” or “Methodological Limitations and Risks” subsection of your research plan or manuscript.","Seek approvals: Submit your risk assessment to your institution’s Ethics Board, Biosafety Committee, or supervisor for formal review before starting data collection."]]]]],
+
+  ["Definition of Terms",[
+   [["Identify Key Terms and Variables",["Review your research title, research questions, hypotheses, and conceptual framework.","Pull out major independent and dependent variables, technical or scientific jargon, unfamiliar constructs, and any acronyms used.","Skip common, everyday words that do not need special clarification."]],
+    ["Choose the Right Definition Type",["Conceptual Definition: The general or dictionary/academic meaning of a term derived from literature, books, or scholarly journals.","Operational Definition: How the term is specifically measured, used, or observed within your particular study (e.g., instead of just defining “academic performance” as general learning success, define it operationally as “measured by the student’s final grade point average in Mathematics”)."]],
+    ["Organize and Format the List",["Write a brief introductory sentence (e.g., “For the purpose of this study, the following terms are defined operationally…”).","Arrange the terms in alphabetical order.","Format the terms consistently — such as bolding the term, followed by a period or dash, and then the definition."]]]]]],
+ "Methodology Writing":["Research Design","Participants","Instruments","Procedure"].map(n=>[n,gen(1)]),
+ "Results Writing":["Summary of Findings","Tables and Figures","Key Patterns"].map(n=>[n,gen(1)]),
+ "Discussion Writing":["Interpretation","Implications","Limitations","Future Work"].map(n=>[n,gen(1)])
+};
+
+const store={};
+try{Object.assign(store,JSON.parse(localStorage.getItem('drafts')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('drafts',JSON.stringify(store))}catch(e){}};
+
+/* build accordion */
+const acc=$('#acc');
+Object.entries(DATA).forEach(([sec,items],si)=>{
+  const li=document.createElement('li');
+  li.innerHTML=`<button class="head" aria-expanded="false" aria-controls="n${si}"><span class="chev">›</span><span class="dot"></span><span class="lbl fun">${sec}</span></button>
+  <div class="nums hidden" id="n${si}">${items.map((it,i)=>`<button title="${it[0]}" data-s="${si}" data-i="${i}">${i+1}</button>`).join('')}</div>`;
+  acc.append(li);
+});
+acc.addEventListener('click',e=>{
+  const head=e.target.closest('.head');
+  if(head){const open=head.getAttribute('aria-expanded')==='true';
+    head.setAttribute('aria-expanded',!open);$('#'+head.getAttribute('aria-controls')).classList.toggle('hidden',open);return}
+  const n=e.target.closest('.nums button');
+  if(n)openViewer(+n.dataset.s,+n.dataset.i);
+});
+$('#a-prev').onclick=()=>$$('.head[aria-expanded=true]').forEach(h=>h.click());
+$('#a-close').onclick=()=>{$('#activities').classList.add('hidden');$('#viewer').classList.add('hidden')};
+
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const list=a=>`<ul>${a.map((x,i)=>typeof x==='string'?`<li>${esc(x)}${Array.isArray(a[i+1])?list(a[i+1]):''}</li>`:'').join('')}</ul>`;
+/* viewer */
+let cur={s:0,flat:[],k:0};
+function openViewer(s,i){
+  const items=Object.values(DATA)[s];
+  const flat=[];items.forEach((it,ii)=>it[1].forEach((steps,p)=>flat.push({ii,name:it[0],steps,p,of:it[1].length})));
+  cur={s,flat,k:flat.findIndex(f=>f.ii===i)};
+  $$('.nums button').forEach(b=>b.setAttribute('aria-current',b.dataset.s==s&&b.dataset.i==i));
+  render();$('#viewer').classList.remove('hidden');$('#viewer').scrollIntoView({block:'start'});
+}
+function render(){
+  const f=cur.flat[cur.k], key=`${cur.s}-${f.ii}-${f.p}`;
+  $('#v-title').textContent=`${f.ii+1} - ${f.name}`;
+  $('#v-pg').textContent=f.of>1?`page ${f.p+1}/${f.of}`:'';
+  $('#steps').innerHTML=`<h3 class="fun">Steps</h3>`+f.steps.map(st=>`<div class="step"><label><input type="checkbox"><span>${esc(st[0])}</span></label>${st.slice(1).map(b=>typeof b==='string'?`<p>${esc(b)}</p>`:list(b)).join('')}</div>`).join('');
+  const w=$('#write');w.value=store[key]||'';w.dataset.key=key;
+  $('#v-prev').disabled=cur.k===0;$('#v-next').disabled=cur.k===cur.flat.length-1;
+}
+$('#v-prev').onclick=()=>{cur.k--;render()};
+$('#v-next').onclick=()=>{cur.k++;render()};
+$('#v-close').onclick=()=>$('#viewer').classList.add('hidden');
+$('#write').addEventListener('input',e=>{store[e.target.dataset.key]=e.target.value;save()});
+
+
+/* quiz deck */
+const QUIZ={title:"Research Time!",cards:[
+ {q:"“It is a **systematic and disciplined investigation** designed to discover, interpret, and revise facts, theories, or practical applications. By combining structured methodologies with empirical data or critical analysis, it moves beyond mere information-gathering to establish new insights and validate existing knowledge.” Based on what you studied from the website, what does this definition refer to?",
+  opts:["Research","Quantitative Research","Qualitative Research","Mixed Method Research"],a:0},
+ {q:"This type of research mainly focuses on gathering participants’ experiences, perceptions, and behavior.",
+  opts:["Qualitative Research","Quantitative Research","Mixed Method Research"],a:0}
+]};
+const fmt=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<mark>$1</mark>');
+let qs={i:0,score:0,done:false};
+function renderDeck(){
+  const n=QUIZ.cards.length;
+  $('#deck-title').textContent=QUIZ.title;
+  $('#deck-sub').textContent=`Deck · ${n} card${n===1?'':'s'}`;
+  $('#cards-h').textContent=`Cards (${n})`;
+  $('#cards').innerHTML=QUIZ.cards.map(c=>`<article class="qcard"><div class="qt">${fmt(c.q)}</div><ul>${c.opts.map((o,k)=>`<li class="${k===c.a?'ok':''}"><span class="ic" aria-hidden="true">${k===c.a?'✓':'✕'}</span><span>${esc(o)}${k===c.a?'<span class="sr" hidden> (correct)</span>':''}</span></li>`).join('')}</ul></article>`).join('');
+}
+function showStudy(on){
+  $('#materials').classList.toggle('hidden',on);$('#study').classList.toggle('hidden',!on);
+  $('#study-btn').classList.toggle('hidden',on);
+}
+function startStudy(){qs={i:0,score:0,done:false};showStudy(true);renderQ();$('#quiz').scrollIntoView({block:'start'})}
+function renderQ(){
+  const n=QUIZ.cards.length,box=$('#study');
+  if(qs.i>=n){
+    box.innerHTML=`<div class="sq score"><p class="big">${qs.score}/${n}</p><p>${qs.score===n?'Perfect score! You know your research basics.':'Nice try! Review the deck and give it another go.'}</p><div class="row"><button class="studybtn" id="s-retry">Try again</button><button class="ghost" id="s-back">Back to deck</button></div></div>`;
+    $('#s-retry').onclick=startStudy;$('#s-back').onclick=()=>showStudy(false);return;
+  }
+  const c=QUIZ.cards[qs.i];
+  box.innerHTML=`<div class="sq"><div class="sprog"><span>Question ${qs.i+1} of ${n}</span><div class="bar"><i style="width:${qs.i/n*100}%"></i></div><button class="ghost" id="s-exit">Exit</button></div>
+   <p class="qt">${fmt(c.q)}</p><div class="opts">${c.opts.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div>
+   <div class="sfoot"><span class="fb" id="fb"></span></div></div>`;
+  $('#s-exit').onclick=()=>showStudy(false);
+  $$('#study .opt').forEach(b=>b.onclick=()=>answer(+b.dataset.k));
+}
+function answer(k){
+  const c=QUIZ.cards[qs.i],ok=k===c.a;
+  if(ok)qs.score++;
+  $$('#study .opt').forEach((b,j)=>{b.disabled=true;if(j===c.a)b.classList.add('right');else if(j===k)b.classList.add('wrong')});
+  const last=qs.i===QUIZ.cards.length-1;
+  $('.sfoot').innerHTML=`<span class="fb ${ok?'ok':'no'}">${ok?'Correct!':'Not quite — the answer is '+esc(c.opts[c.a])+'.'}</span><button class="studybtn" id="s-next">${last?'See results':'Next'}</button>`;
+  $('#s-next').onclick=()=>{qs.i++;renderQ()};$('#s-next').focus();
+}
+$('#study-btn').onclick=startStudy;
+renderDeck();
+
+/* tabs + cards */
+function tab(t){
+  $('#writing').classList.toggle('hidden',t!=='writing');$('#interactives').classList.toggle('hidden',t!=='interactives');
+  $$('.tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));$('#flip').textContent=t==='writing'?'›':'‹';
+}
+$$('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+$('#flip').onclick=()=>tab($('#writing').classList.contains('hidden')?'writing':'interactives');
+$$('.game').forEach(b=>b.onclick=()=>{
+  $$('.game').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const g=b.dataset.g;
+  $('#activities').classList.toggle('hidden',g!=='activity');
+  $('#quiz').classList.toggle('hidden',g!=='quiz');
+  if(g!=='activity')$('#viewer').classList.add('hidden');
+  if(g==='quiz')showStudy(false);
+});
+</script>
+</body>
+</html>
